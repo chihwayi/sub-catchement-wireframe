@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subcatchment Council Billing & Permit System - Wireframe Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Main Tab Navigation */
+        .main-tabs {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 0;
+            overflow-x: auto;
+        }
+
+        .main-tab-nav {
+            display: flex;
+            background: #1e3a8a;
+            min-width: max-content;
+        }
+
+        .main-tab {
+            padding: 18px 25px;
+            cursor: pointer;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .main-tab:hover {
+            background: #2d4a7a;
+            transform: translateY(-2px);
+        }
+
+        .main-tab.active {
+            background: white;
+            color: #1e3a8a;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .main-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: #3b82f6;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            min-height: calc(100vh - 200px);
+            padding: 30px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            background: white;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 20px 25px;
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header::before {
+            content: '📊';
+            font-size: 1.2em;
+        }
+
+        .wireframe-content {
+            padding: 25px;
+            background: #fafbfc;
+            border: 1px dashed #d1d5db;
+        }
+
+        .mock-interface {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin: 20px 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95em;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+            transition: border-color 0.2s ease;
+            font-size: 1em;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 600;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #4b5563, #374151);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .dashboard-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 15px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 25px;
+            background: #f8fafc;
+            border-radius: 8px 8px 0 0;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: #f1f5f9;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            margin-right: 0;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #e2e8f0;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom: 3px solid #3b82f6;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active {
+            display: block;
+        }
+
+        .navigation {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(30, 58, 138, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+        .status-rejected { background: #fee2e2; color: #991b1b; }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-tab-nav {
+                flex-direction: column;
+            }
+
+            .main-tab {
+                min-width: auto;
+                text-align: left;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .tab-content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+    <script>
+        function openTab(tabName) {
+            // Hide all tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.main-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+
+            // Reset all sub-tabs to first tab when switching main tabs
+            setTimeout(() => {
+                const subTabs = document.querySelectorAll('.tab');
+                const subTabContents = document.querySelectorAll('.sub-tab-content');
+                if (subTabs.length > 0) {
+                    subTabs.forEach(tab => tab.classList.remove('active'));
+                    subTabContents.forEach(content => content.classList.remove('active'));
+                    subTabs[0].classList.add('active');
+                    subTabContents[0].classList.add('active');
+                }
+            }, 50);
+        }
+
+        function openSubTab(tabName, mainTab) {
+            // Get the current main tab content
+            const mainTabContent = document.getElementById(mainTab);
+
+            // Hide all sub-tab content within this main tab
+            const subTabContents = mainTabContent.querySelectorAll('.sub-tab-content');
+            subTabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all sub-tabs within this main tab
+            const subTabs = mainTabContent.querySelectorAll('.tab');
+            subTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show the selected sub-tab content
+            const targetContent = mainTabContent.querySelector('#' + tabName);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+
+            // Add active class to clicked sub-tab
+            event.target.classList.add('active');
+        }
+
+        // Set default active tab
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('.main-tab').click();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Subcatchment Council Billing & Permit System</h1>
+        <p>Water Resource Management & Permit Processing Platform</p>
+    </div>
+
+    <!-- Main Tab Navigation -->
+    <div class="main-tabs">
+        <div class="main-tab-nav">
+            <button class="main-tab active" onclick="openTab('dashboard')">📊 Dashboard</button>
+            <button class="main-tab" onclick="openTab('permits')">📝 Permit Applications</button>
+            <button class="main-tab" onclick="openTab('billing')">💳 Billing & Payments</button>
+            <button class="main-tab" onclick="openTab('documents')">📁 Document Management</button>
+            <button class="main-tab" onclick="openTab('reports')">📈 Reports & Analytics</button>
+            <button class="main-tab" onclick="openTab('admin')">⚙️ Admin Panel</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="section">
+                <div class="section-header">Dashboard - System Overview</div>
+                <div class="wireframe-content">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>Active Permits</h3>
+                            <div class="stat-number">247</div>
+                            <p>Currently valid water use permits</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Pending Applications</h3>
+                            <div class="stat-number">23</div>
+                            <p>Awaiting council approval</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Monthly Revenue</h3>
+                            <div class="stat-number">$45,230</div>
+                            <p>Permit fees collected this month</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Outstanding Payments</h3>
+                            <div class="stat-number">$12,450</div>
+                            <p>Unpaid permit fees</p>
+                        </div>
+                    </div>
+
+                    <h3>Recent Applications</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Application ID</th>
+                                <th>Applicant</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>APP-2024-001</td>
+                                <td>John Farmer Enterprises</td>
+                                <td>Groundwater Permit</td>
+                                <td><span class="status-badge status-pending">Under Review</span></td>
+                                <td>2024-01-15</td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>APP-2024-002</td>
+                                <td>Riverbend Irrigation Ltd</td>
+                                <td>Surface Water Permit</td>
+                                <td><span class="status-badge status-approved">Approved</span></td>
+                                <td>2024-01-12</td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                            <tr>
+                                <td>APP-2024-003</td>
+                                <td>Mining Corp Zimbabwe</td>
+                                <td>Bulk Water Supply</td>
+                                <td><span class="status-badge status-pending">Documents Required</span></td>
+                                <td>2024-01-10</td>
+                                <td><button class="btn">View</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Permit Applications Tab -->
+        <div id="permits" class="tab-content">
+            <div class="section">
+                <div class="section-header">Permit Application Forms</div>
+                <div class="wireframe-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="openSubTab('gw9', 'permits')">Groundwater Permit (GW-9)</div>
+                    <div class="tab" onclick="openSubTab('w1', 'permits')">Surface Water Permit (W-1)</div>
+                    <div class="tab" onclick="openSubTab('w2', 'permits')">Wastewater Discharge (W-2)</div>
+                    <div class="tab" onclick="openSubTab('w3', 'permits')">Bulk Water Supply (W-3)</div>
+                </div>
+
+                <!-- Groundwater Permit (GW-9) -->
+                <div id="gw9" class="sub-tab-content active">
+                    <div class="mock-interface">
+                        <h3>Groundwater Abstraction Permit Application</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Applicant Details</label>
+                                <input type="text" placeholder="Full Name / Company Name">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" placeholder="+263 XX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" placeholder="applicant@email.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Physical Address</label>
+                                <textarea rows="3" placeholder="Full address including district and ward"></textarea>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Purpose of Water Use</label>
+                                    <select>
+                                        <option>Domestic</option>
+                                        <option>Agricultural</option>
+                                        <option>Industrial</option>
+                                        <option>Mining</option>
+                                        <option>Commercial</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Requested Volume (m³/day)</label>
+                                    <input type="number" placeholder="100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration (Years)</label>
+                                    <select>
+                                        <option>1 Year</option>
+                                        <option>2 Years</option>
+                                        <option>5 Years</option>
+                                        <option>10 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Location Details</label>
+                                <textarea rows="3" placeholder="GPS coordinates, farm name, or detailed description of abstraction site"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Supporting Documents</label>
+                                <p style="color: #666; font-size: 0.9em;">Upload the following documents:</p>
+                                <ul style="color: #666; margin: 10px 0;">
+                                    <li>Site layout plan</li>
+                                    <li>Environmental Impact Assessment (if applicable)</li>
+                                    <li>Proof of land ownership</li>
+                                    <li>ID/Passport copy</li>
+                                </ul>
+                                <input type="file" multiple style="margin-top: 10px;">
+                            </div>
+
+                            <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+                                <h4>Pricing Information</h4>
+                                <p style="color: #666; margin: 10px 0;">Application Fee: $50 | Annual Permit Fee: $200 | Processing Time: 30 days</p>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 20px;">
+                                <button type="button" class="btn btn-secondary">Save Draft</button>
+                                <button type="submit" class="btn">Submit Application</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Surface Water Permit (W-1) -->
+                <div id="w1" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Surface Water Abstraction Permit Application</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Applicant Details</label>
+                                <input type="text" placeholder="Full Name / Company Name">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" placeholder="+263 XX XXX XXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" placeholder="applicant@email.com">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Water Source Type</label>
+                                <select>
+                                    <option>River</option>
+                                    <option>Dam</option>
+                                    <option>Lake</option>
+                                    <option>Stream</option>
+                                    <option>Canal</option>
+                                </select>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Purpose of Water Use</label>
+                                    <select>
+                                        <option>Irrigation</option>
+                                        <option>Industrial</option>
+                                        <option>Mining</option>
+                                        <option>Commercial</option>
+                                        <option>Power Generation</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Requested Volume (m³/day)</label>
+                                    <input type="number" placeholder="500">
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration (Years)</label>
+                                    <select>
+                                        <option>1 Year</option>
+                                        <option>2 Years</option>
+                                        <option>5 Years</option>
+                                        <option>10 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Source Location & Details</label>
+                                <textarea rows="3" placeholder="Name of river/dam, GPS coordinates, and detailed description of abstraction point"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Environmental Impact Assessment</label>
+                                <p style="color: #666; font-size: 0.9em;">Required for surface water abstractions over 100m³/day</p>
+                                <input type="file" style="margin-top: 10px;">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Supporting Documents</label>
+                                <p style="color: #666; font-size: 0.9em;">Upload the following documents:</p>
+                                <ul style="color: #666; margin: 10px 0;">
+                                    <li>Hydrological study report</li>
+                                    <li>Water availability assessment</li>
+                                    <li>Environmental Impact Assessment</li>
+                                    <li>Land ownership proof</li>
+                                    <li>Technical specifications</li>
+                                </ul>
+                                <input type="file" multiple style="margin-top: 10px;">
+                            </div>
+
+                            <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+                                <h4>Pricing Information</h4>
+                                <p style="color: #666; margin: 10px 0;">Application Fee: $75 | Annual Permit Fee: $350 | Processing Time: 45 days</p>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 20px;">
+                                <button type="button" class="btn btn-secondary">Save Draft</button>
+                                <button type="submit" class="btn">Submit Application</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Wastewater Discharge (W-2) -->
+                <div id="w2" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Wastewater Discharge Permit Application</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Facility/Company Details</label>
+                                <input type="text" placeholder="Company Name / Facility Name">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Contact Person</label>
+                                    <input type="text" placeholder="Full Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    <input type="tel" placeholder="+263 XX XXX XXXX">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Type of Wastewater</label>
+                                <select>
+                                    <option>Domestic Sewage</option>
+                                    <option>Industrial Wastewater</option>
+                                    <option>Mining Effluent</option>
+                                    <option>Agricultural Runoff</option>
+                                    <option>Storm Water</option>
+                                </select>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Discharge Volume (m³/day)</label>
+                                    <input type="number" placeholder="200">
+                                </div>
+                                <div class="form-group">
+                                    <label>Discharge Location</label>
+                                    <select>
+                                        <option>River</option>
+                                        <option>Dam</option>
+                                        <option>Sewer System</option>
+                                        <option>Land Application</option>
+                                        <option>Evaporation Pond</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration (Years)</label>
+                                    <select>
+                                        <option>1 Year</option>
+                                        <option>2 Years</option>
+                                        <option>5 Years</option>
+                                        <option>10 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Treatment Method</label>
+                                <select>
+                                    <option>Primary Treatment</option>
+                                    <option>Secondary Treatment</option>
+                                    <option>Tertiary Treatment</option>
+                                    <option>Advanced Treatment</option>
+                                    <option>No Treatment</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Water Quality Parameters</label>
+                                <p style="color: #666; font-size: 0.9em;">Specify expected effluent quality:</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px;">
+                                    <input type="text" placeholder="pH">
+                                    <input type="text" placeholder="BOD (mg/L)">
+                                    <input type="text" placeholder="COD (mg/L)">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Supporting Documents</label>
+                                <p style="color: #666; font-size: 0.9em;">Upload the following documents:</p>
+                                <ul style="color: #666; margin: 10px 0;">
+                                    <li>Treatment plant design</li>
+                                    <li>Water quality monitoring plan</li>
+                                    <li>Environmental Impact Assessment</li>
+                                    <li>Effluent discharge license</li>
+                                    <li>Laboratory analysis reports</li>
+                                </ul>
+                                <input type="file" multiple style="margin-top: 10px;">
+                            </div>
+
+                            <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+                                <h4>Pricing Information</h4>
+                                <p style="color: #666; margin: 10px 0;">Application Fee: $100 | Annual Permit Fee: $500 | Processing Time: 60 days</p>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 20px;">
+                                <button type="button" class="btn btn-secondary">Save Draft</button>
+                                <button type="submit" class="btn">Submit Application</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Bulk Water Supply (W-3) -->
+                <div id="w3" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Bulk Water Supply Permit Application</h3>
+                        <form>
+                            <div class="form-group">
+                                <label>Organization Details</label>
+                                <input type="text" placeholder="Company Name / Organization">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Registration Number</label>
+                                    <input type="text" placeholder="Company Reg. No.">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Person</label>
+                                    <input type="text" placeholder="Full Name">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Type of Supply</label>
+                                <select>
+                                    <option>Water Utility Company</option>
+                                    <option>Industrial Supply</option>
+                                    <option>Mining Operations</option>
+                                    <option>Agricultural Cooperative</option>
+                                    <option>Municipal Supply</option>
+                                </select>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label>Requested Volume (m³/day)</label>
+                                    <input type="number" placeholder="10000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Source Type</label>
+                                    <select>
+                                        <option>Surface Water</option>
+                                        <option>Groundwater</option>
+                                        <option>Mixed Sources</option>
+                                        <option>Imported Water</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration (Years)</label>
+                                    <select>
+                                        <option>1 Year</option>
+                                        <option>2 Years</option>
+                                        <option>5 Years</option>
+                                        <option>10 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Service Area Coverage</label>
+                                <textarea rows="3" placeholder="Describe the area to be served, number of customers, and infrastructure details"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Water Treatment Facilities</label>
+                                <textarea rows="3" placeholder="Describe treatment processes, capacity, and compliance with water quality standards"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Distribution Network</label>
+                                <textarea rows="2" placeholder="Describe pipeline network, storage facilities, and distribution infrastructure"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Supporting Documents</label>
+                                <p style="color: #666; font-size: 0.9em;">Upload the following documents:</p>
+                                <ul style="color: #666; margin: 10px 0;">
+                                    <li>Engineering designs and specifications</li>
+                                    <li>Water quality monitoring plan</li>
+                                    <li>Financial viability study</li>
+                                    <li>Environmental Impact Assessment</li>
+                                    <li>Company registration documents</li>
+                                    <li>Technical capacity certificates</li>
+                                </ul>
+                                <input type="file" multiple style="margin-top: 10px;">
+                            </div>
+
+                            <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px;">
+                                <h4>Pricing Information</h4>
+                                <p style="color: #666; margin: 10px 0;">Application Fee: $200 | Annual Permit Fee: $1,000 | Processing Time: 90 days</p>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 20px;">
+                                <button type="button" class="btn btn-secondary">Save Draft</button>
+                                <button type="submit" class="btn">Submit Application</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing & Payments Tab -->
+        <div id="billing" class="tab-content">
+            <div class="section">
+                <div class="section-header">Billing & Payment Management</div>
+                <div class="wireframe-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="openSubTab('outstanding', 'billing')">Outstanding Bills</div>
+                    <div class="tab" onclick="openSubTab('history', 'billing')">Payment History</div>
+                    <div class="tab" onclick="openSubTab('invoice', 'billing')">Generate Invoice</div>
+                </div>
+
+                <!-- Outstanding Bills -->
+                <div id="outstanding" class="sub-tab-content active">
+                    <div class="mock-interface">
+                        <h3>Outstanding Permit Fees</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Permit ID</th>
+                                    <th>Permit Holder</th>
+                                    <th>Fee Type</th>
+                                    <th>Amount Due</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PER-2023-045</td>
+                                    <td>Agricultural Co-op</td>
+                                    <td>Annual Renewal</td>
+                                    <td>$350.00</td>
+                                    <td>2024-02-15</td>
+                                    <td><span class="status-badge status-pending">Overdue</span></td>
+                                    <td><button class="btn">Pay Now</button></td>
+                                </tr>
+                                <tr>
+                                    <td>PER-2023-078</td>
+                                    <td>Mining Operations Ltd</td>
+                                    <td>Bulk Water Supply</td>
+                                    <td>$1,250.00</td>
+                                    <td>2024-01-30</td>
+                                    <td><span class="status-badge status-pending">Due Soon</span></td>
+                                    <td><button class="btn">Pay Now</button></td>
+                                </tr>
+                                <tr>
+                                    <td>PER-2024-012</td>
+                                    <td>River Irrigation Scheme</td>
+                                    <td>Application Fee</td>
+                                    <td>$75.00</td>
+                                    <td>2024-01-20</td>
+                                    <td><span class="status-badge status-approved">Paid</span></td>
+                                    <td><button class="btn btn-secondary">Receipt</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                            <h4>Payment Methods</h4>
+                            <div style="display: flex; gap: 15px; margin-top: 10px;">
+                                <label style="display: flex; align-items: center;">
+                                    <input type="radio" name="payment" checked> Bank Transfer
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="radio" name="payment"> EcoCash
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="radio" name="payment"> Credit Card
+                                </label>
+                                <label style="display: flex; align-items: center;">
+                                    <input type="radio" name="payment"> PayPal
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment History -->
+                <div id="history" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Payment History & Transactions</h3>
+
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                    <option>Last 30 Days</option>
+                                    <option>Last 3 Months</option>
+                                    <option>Last 6 Months</option>
+                                    <option>Last Year</option>
+                                    <option>All Time</option>
+                                </select>
+                                <input type="text" placeholder="Search by permit ID or company..." style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; flex: 1;">
+                                <button class="btn">Search</button>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Permit ID</th>
+                                    <th>Permit Holder</th>
+                                    <th>Payment Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TXN-2024-00145</td>
+                                    <td>PER-2023-045</td>
+                                    <td>Agricultural Co-op</td>
+                                    <td>2024-01-15</td>
+                                    <td>$350.00</td>
+                                    <td>Bank Transfer</td>
+                                    <td><span class="status-badge status-approved">Completed</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Receipt</button></td>
+                                </tr>
+                                <tr>
+                                    <td>TXN-2024-00142</td>
+                                    <td>PER-2023-078</td>
+                                    <td>Mining Operations Ltd</td>
+                                    <td>2024-01-12</td>
+                                    <td>$625.00</td>
+                                    <td>EcoCash</td>
+                                    <td><span class="status-badge status-approved">Completed</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Receipt</button></td>
+                                </tr>
+                                <tr>
+                                    <td>TXN-2024-00138</td>
+                                    <td>PER-2024-012</td>
+                                    <td>River Irrigation Scheme</td>
+                                    <td>2024-01-10</td>
+                                    <td>$75.00</td>
+                                    <td>Credit Card</td>
+                                    <td><span class="status-badge status-approved">Completed</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Receipt</button></td>
+                                </tr>
+                                <tr>
+                                    <td>TXN-2024-00135</td>
+                                    <td>PER-2023-089</td>
+                                    <td>Industrial Corp</td>
+                                    <td>2024-01-08</td>
+                                    <td>$500.00</td>
+                                    <td>Bank Transfer</td>
+                                    <td><span class="status-badge status-approved">Completed</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Receipt</button></td>
+                                </tr>
+                                <tr>
+                                    <td>TXN-2024-00130</td>
+                                    <td>PER-2023-056</td>
+                                    <td>Municipal Water</td>
+                                    <td>2024-01-05</td>
+                                    <td>$1,200.00</td>
+                                    <td>PayPal</td>
+                                    <td><span class="status-badge status-approved">Completed</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Receipt</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <div style="color: #666;">
+                                Showing 5 of 156 transactions
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Previous</button>
+                                <span style="padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">Page 1 of 32</span>
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Invoice -->
+                <div id="invoice" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Generate Invoice</h3>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                            <h4>Invoice Generation Form</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div class="form-group">
+                                    <label>Permit ID</label>
+                                    <input type="text" placeholder="Enter permit ID (e.g., PER-2024-001)">
+                                </div>
+                                <div class="form-group">
+                                    <label>Invoice Type</label>
+                                    <select>
+                                        <option>Application Fee</option>
+                                        <option>Annual Renewal</option>
+                                        <option>Late Payment Fee</option>
+                                        <option>Amendment Fee</option>
+                                        <option>Custom Amount</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                <div class="form-group">
+                                    <label>Amount (USD)</label>
+                                    <input type="number" placeholder="0.00">
+                                </div>
+                                <div class="form-group">
+                                    <label>Due Date</label>
+                                    <input type="date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Priority</label>
+                                    <select>
+                                        <option>Normal</option>
+                                        <option>Urgent</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label>Invoice Description</label>
+                                <textarea rows="3" placeholder="Describe the services or fees being invoiced"></textarea>
+                            </div>
+
+                            <div style="text-align: right; margin-top: 20px;">
+                                <button class="btn btn-secondary" style="margin-right: 10px;">Preview</button>
+                                <button class="btn">Generate Invoice</button>
+                            </div>
+                        </div>
+
+                        <h4>Recent Invoices</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Permit ID</th>
+                                    <th>Amount</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>INV-2024-0045</td>
+                                    <td>PER-2024-023</td>
+                                    <td>$150.00</td>
+                                    <td>2024-02-15</td>
+                                    <td><span class="status-badge status-pending">Sent</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-2024-0042</td>
+                                    <td>PER-2024-019</td>
+                                    <td>$75.00</td>
+                                    <td>2024-02-01</td>
+                                    <td><span class="status-badge status-approved">Paid</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>INV-2024-0039</td>
+                                    <td>PER-2024-015</td>
+                                    <td>$500.00</td>
+                                    <td>2024-01-30</td>
+                                    <td><span class="status-badge status-pending">Overdue</span></td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Management Tab -->
+        <div id="documents" class="tab-content">
+            <div class="section">
+                <div class="section-header">Document Management System</div>
+                <div class="wireframe-content">
+                    <div class="mock-interface">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3>Permit Documents</h3>
+                            <button class="btn">Upload Document</button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+                                <h4>Environmental Impact Assessment</h4>
+                                <p style="color: #666; font-size: 0.9em;">Uploaded: 2024-01-10 | Size: 2.4 MB</p>
+                                <div style="margin-top: 10px;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                </div>
+                            </div>
+
+                            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+                                <h4>Site Layout Plan</h4>
+                                <p style="color: #666; font-size: 0.9em;">Uploaded: 2024-01-08 | Size: 1.1 MB</p>
+                                <div style="margin-top: 10px;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                </div>
+                            </div>
+
+                            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px;">
+                                <h4>Water Quality Report</h4>
+                                <p style="color: #666; font-size: 0.9em;">Uploaded: 2024-01-05 | Size: 856 KB</p>
+                                <div style="margin-top: 10px;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">Download</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8em;">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports & Analytics Tab -->
+        <div id="reports" class="tab-content">
+            <div class="section">
+                <div class="section-header">Reports & Analytics</div>
+                <div class="wireframe-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="openSubTab('statistics', 'reports')">Permit Statistics</div>
+                    <div class="tab" onclick="openSubTab('revenue', 'reports')">Revenue Reports</div>
+                    <div class="tab" onclick="openSubTab('compliance', 'reports')">Compliance Monitoring</div>
+                </div>
+
+                <!-- Permit Statistics -->
+                <div id="statistics" class="sub-tab-content active">
+                    <div class="mock-interface">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3>Permit Statistics Overview</h3>
+                            <div>
+                                <select style="padding: 5px; margin-right: 10px;">
+                                    <option>Last 30 Days</option>
+                                    <option>Last 3 Months</option>
+                                    <option>Last Year</option>
+                                </select>
+                                <button class="btn">Export Report</button>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 2em; color: #1e3a8a; font-weight: bold;">156</div>
+                                <div>Approved Permits</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 2em; color: #dc2626; font-weight: bold;">23</div>
+                                <div>Rejected Applications</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 2em; color: #ea580c; font-weight: bold;">34</div>
+                                <div>Pending Review</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-size: 2em; color: #059669; font-weight: bold;">$67,450</div>
+                                <div>Total Revenue</div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; color: #666;">
+                            <p>[Chart Placeholder - Monthly Permit Applications]</p>
+                            <p>Interactive charts would show trends in permit applications, approval rates, and revenue over time</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Reports -->
+                <div id="revenue" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Revenue Reports & Financial Analytics</h3>
+
+                        <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                            <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option>Monthly Report</option>
+                                <option>Quarterly Report</option>
+                                <option>Annual Report</option>
+                                <option>Custom Period</option>
+                            </select>
+                            <input type="date" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <button class="btn">Generate Report</button>
+                            <button class="btn btn-secondary">Export PDF</button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Total Revenue</h4>
+                                <div style="font-size: 2em; color: #059669; font-weight: bold; margin: 10px 0;">$234,567</div>
+                                <div style="color: #666; font-size: 0.9em;">+12% from last period</div>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Outstanding Payments</h4>
+                                <div style="font-size: 2em; color: #dc2626; font-weight: bold; margin: 10px 0;">$45,230</div>
+                                <div style="color: #666; font-size: 0.9em;">8.2% of total revenue</div>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Collection Rate</h4>
+                                <div style="font-size: 2em; color: #1e3a8a; font-weight: bold; margin: 10px 0;">87.3%</div>
+                                <div style="color: #666; font-size: 0.9em;">+2.1% from last month</div>
+                            </div>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Average Payment Time</h4>
+                                <div style="font-size: 2em; color: #ea580c; font-weight: bold; margin: 10px 0;">14 days</div>
+                                <div style="color: #666; font-size: 0.9em;">-3 days improvement</div>
+                            </div>
+                        </div>
+
+                        <h4>Revenue Breakdown by Permit Type</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Permit Type</th>
+                                    <th>Applications</th>
+                                    <th>Revenue</th>
+                                    <th>Avg. Fee</th>
+                                    <th>% of Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Groundwater Permits (GW-9)</td>
+                                    <td>89</td>
+                                    <td>$17,800</td>
+                                    <td>$200</td>
+                                    <td>7.6%</td>
+                                </tr>
+                                <tr>
+                                    <td>Surface Water Permits (W-1)</td>
+                                    <td>67</td>
+                                    <td>$23,450</td>
+                                    <td>$350</td>
+                                    <td>10.0%</td>
+                                </tr>
+                                <tr>
+                                    <td>Wastewater Discharge (W-2)</td>
+                                    <td>34</td>
+                                    <td>$17,000</td>
+                                    <td>$500</td>
+                                    <td>7.3%</td>
+                                </tr>
+                                <tr>
+                                    <td>Bulk Water Supply (W-3)</td>
+                                    <td>12</td>
+                                    <td>$24,000</td>
+                                    <td>$2,000</td>
+                                    <td>10.2%</td>
+                                </tr>
+                                <tr style="font-weight: bold; background: #f8f9fa;">
+                                    <td>Total</td>
+                                    <td>202</td>
+                                    <td>$82,250</td>
+                                    <td>$407</td>
+                                    <td>35.1%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 25px; text-align: center;">
+                            <p style="color: #666; margin: 0;">[Revenue Trend Chart Placeholder]</p>
+                            <p style="color: #666; font-size: 0.9em; margin: 10px 0 0 0;">Interactive chart showing monthly revenue trends and projections</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Compliance Monitoring -->
+                <div id="compliance" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>Compliance Monitoring Dashboard</h3>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="text-align: center; padding: 20px; background: #d1fae5; border-radius: 8px; border: 1px solid #a7f3d0;">
+                                <div style="font-size: 2em; color: #065f46; font-weight: bold;">94.2%</div>
+                                <div>Compliance Rate</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #fef3c7; border-radius: 8px; border: 1px solid #fde68a;">
+                                <div style="font-size: 2em; color: #92400e; font-weight: bold;">23</div>
+                                <div>Non-Compliant Permits</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #fee2e2; border-radius: 8px; border: 1px solid #fca5a5;">
+                                <div style="font-size: 2em; color: #991b1b; font-weight: bold;">8</div>
+                                <div>Critical Violations</div>
+                            </div>
+                            <div style="text-align: center; padding: 20px; background: #dbeafe; border-radius: 8px; border: 1px solid #bfdbfe;">
+                                <div style="font-size: 2em; color: #1e40af; font-weight: bold;">156</div>
+                                <div>Inspections This Month</div>
+                            </div>
+                        </div>
+
+                        <h4>Compliance Alerts & Issues</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Permit ID</th>
+                                    <th>Permit Holder</th>
+                                    <th>Issue Type</th>
+                                    <th>Severity</th>
+                                    <th>Reported Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>PER-2023-045</td>
+                                    <td>Agricultural Co-op</td>
+                                    <td>Excessive Water Usage</td>
+                                    <td><span class="status-badge status-pending">Medium</span></td>
+                                    <td>2024-01-15</td>
+                                    <td><span class="status-badge status-pending">Under Review</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Investigate</button></td>
+                                </tr>
+                                <tr>
+                                    <td>PER-2023-078</td>
+                                    <td>Mining Operations Ltd</td>
+                                    <td>Quality Parameters Exceeded</td>
+                                    <td><span class="status-badge status-rejected">High</span></td>
+                                    <td>2024-01-12</td>
+                                    <td><span class="status-badge status-pending">Notice Sent</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Follow Up</button></td>
+                                </tr>
+                                <tr>
+                                    <td>PER-2024-012</td>
+                                    <td>River Irrigation Scheme</td>
+                                    <td>Late Fee Payment</td>
+                                    <td><span class="status-badge status-pending">Low</span></td>
+                                    <td>2024-01-10</td>
+                                    <td><span class="status-badge status-approved">Resolved</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">View Details</button></td>
+                                </tr>
+                                <tr>
+                                    <td>PER-2023-089</td>
+                                    <td>Industrial Corp</td>
+                                    <td>Unauthorized Discharge</td>
+                                    <td><span class="status-badge status-rejected">Critical</span></td>
+                                    <td>2024-01-08</td>
+                                    <td><span class="status-badge status-pending">Legal Action</span></td>
+                                    <td><button class="btn btn-secondary" style="font-size: 0.8em;">Escalate</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="display: flex; gap: 20px; margin-top: 25px;">
+                            <div style="flex: 1; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Compliance Trends</h4>
+                                <p style="color: #666; text-align: center; margin-top: 20px;">[Compliance Trend Chart]</p>
+                                <p style="color: #666; font-size: 0.9em; text-align: center;">Monthly compliance rates and violation trends</p>
+                            </div>
+                            <div style="flex: 1; background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h4>Permit Renewals Due</h4>
+                                <div style="margin-top: 15px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Next 30 days</span>
+                                        <span style="font-weight: bold; color: #ea580c;">23 permits</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                        <span>Next 90 days</span>
+                                        <span style="font-weight: bold; color: #1e3a8a;">67 permits</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>Overdue</span>
+                                        <span style="font-weight: bold; color: #dc2626;">8 permits</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel Tab -->
+        <div id="admin" class="tab-content">
+            <div class="section">
+                <div class="section-header">Administrator Panel</div>
+                <div class="wireframe-content">
+                <div class="tabs">
+                    <div class="tab active" onclick="openSubTab('users', 'admin')">User Management</div>
+                    <div class="tab" onclick="openSubTab('settings', 'admin')">System Settings</div>
+                    <div class="tab" onclick="openSubTab('audit', 'admin')">Audit Logs</div>
+                </div>
+
+                <!-- User Management -->
+                <div id="users" class="sub-tab-content active">
+                    <div class="mock-interface">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3>User Accounts Management</h3>
+                            <button class="btn">Add New User</button>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                    <option>All Roles</option>
+                                    <option>Permit Officer</option>
+                                    <option>Council Member</option>
+                                    <option>Finance Officer</option>
+                                    <option>System Administrator</option>
+                                </select>
+                                <input type="text" placeholder="Search by name or email..." style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; flex: 1;">
+                                <button class="btn">Search</button>
+                            </div>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>USR-001</td>
+                                    <td>Mary Johnson</td>
+                                    <td>Permit Officer</td>
+                                    <td>mary.johnson@subcatchment.gov.zw</td>
+                                    <td><span class="status-badge status-approved">Active</span></td>
+                                    <td>2024-01-15 09:30</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Edit</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Reset Password</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>USR-002</td>
+                                    <td>David Moyo</td>
+                                    <td>Council Member</td>
+                                    <td>david.moyo@subcatchment.gov.zw</td>
+                                    <td><span class="status-badge status-approved">Active</span></td>
+                                    <td>2024-01-14 14:22</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Edit</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Reset Password</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>USR-003</td>
+                                    <td>Sarah Ndlovu</td>
+                                    <td>Finance Officer</td>
+                                    <td>sarah.ndlovu@subcatchment.gov.zw</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>Never</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Activate</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Edit</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>USR-004</td>
+                                    <td>John Banda</td>
+                                    <td>System Administrator</td>
+                                    <td>john.banda@subcatchment.gov.zw</td>
+                                    <td><span class="status-badge status-approved">Active</span></td>
+                                    <td>2024-01-15 08:15</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Edit</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Reset Password</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>USR-005</td>
+                                    <td>Grace Zulu</td>
+                                    <td>Permit Officer</td>
+                                    <td>grace.zulu@subcatchment.gov.zw</td>
+                                    <td><span class="status-badge status-approved">Active</span></td>
+                                    <td>2024-01-14 16:45</td>
+                                    <td>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Edit</button>
+                                        <button class="btn btn-secondary" style="font-size: 0.8em;">Reset Password</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <div style="color: #666;">
+                                Showing 5 of 23 users
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Previous</button>
+                                <span style="padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">Page 1 of 5</span>
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Settings -->
+                <div id="settings" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>System Configuration & Settings</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                            <div>
+                                <h4>Application Settings</h4>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label>Application Fee (USD)</label>
+                                    <input type="number" value="50" style="width: 100px;">
+                                </div>
+                                <div class="form-group">
+                                    <label>Processing Time (Days)</label>
+                                    <input type="number" value="30" style="width: 100px;">
+                                </div>
+                                <div class="form-group">
+                                    <label>Auto-approval Threshold</label>
+                                    <select style="width: 150px;">
+                                        <option>Low Risk Only</option>
+                                        <option>All Applications</option>
+                                        <option>Disabled</option>
+                                    </select>
+                                </div>
+
+                                <h4 style="margin-top: 25px;">Email Notifications</h4>
+                                <div style="margin-top: 15px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" checked style="margin-right: 10px;"> Application submissions
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" checked style="margin-right: 10px;"> Payment confirmations
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" checked style="margin-right: 10px;"> Approval notifications
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 10px;"> Rejection notifications
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4>Security Settings</h4>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label>Session Timeout (minutes)</label>
+                                    <input type="number" value="60" style="width: 100px;">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password Policy</label>
+                                    <select style="width: 150px;">
+                                        <option>Strong (8+ chars)</option>
+                                        <option>Medium (6+ chars)</option>
+                                        <option>Weak (4+ chars)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Two-Factor Authentication</label>
+                                    <select style="width: 150px;">
+                                        <option>Optional</option>
+                                        <option>Required for Admins</option>
+                                        <option>Required for All</option>
+                                        <option>Disabled</option>
+                                    </select>
+                                </div>
+
+                                <h4 style="margin-top: 25px;">Backup Settings</h4>
+                                <div style="margin-top: 15px;">
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" checked style="margin-right: 10px;"> Daily automated backup
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" checked style="margin-right: 10px;"> Cloud storage sync
+                                    </label>
+                                    <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <input type="checkbox" style="margin-right: 10px;"> Email backup reports
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 25px; margin-top: 25px;">
+                            <h4>System Maintenance</h4>
+                            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                                <button class="btn btn-secondary">Clear Cache</button>
+                                <button class="btn btn-secondary">Database Optimization</button>
+                                <button class="btn btn-secondary">System Health Check</button>
+                                <button class="btn">Save Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Logs -->
+                <div id="audit" class="sub-tab-content">
+                    <div class="mock-interface">
+                        <h3>System Audit Logs & Activity</h3>
+
+                        <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                            <select style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option>All Activities</option>
+                                <option>User Actions</option>
+                                <option>System Events</option>
+                                <option>Security Events</option>
+                                <option>Permit Changes</option>
+                            </select>
+                            <input type="date" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <input type="text" placeholder="Search logs..." style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; flex: 1;">
+                            <button class="btn">Filter</button>
+                            <button class="btn btn-secondary">Export Logs</button>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Module</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2024-01-15 14:32:15</td>
+                                    <td>Mary Johnson</td>
+                                    <td>Permit Approved</td>
+                                    <td>Applications</td>
+                                    <td>Approved groundwater permit PER-2024-023</td>
+                                    <td>192.168.1.100</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:28:42</td>
+                                    <td>Sarah Ndlovu</td>
+                                    <td>Payment Processed</td>
+                                    <td>Billing</td>
+                                    <td>Received payment of $350 for PER-2023-045</td>
+                                    <td>192.168.1.105</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:25:18</td>
+                                    <td>System</td>
+                                    <td>Auto Backup</td>
+                                    <td>Maintenance</td>
+                                    <td>Daily system backup completed successfully</td>
+                                    <td>localhost</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:22:33</td>
+                                    <td>David Moyo</td>
+                                    <td>User Login</td>
+                                    <td>Security</td>
+                                    <td>Successful login to admin panel</td>
+                                    <td>192.168.1.110</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:18:57</td>
+                                    <td>John Banda</td>
+                                    <td>Settings Changed</td>
+                                    <td>Admin</td>
+                                    <td>Modified email notification settings</td>
+                                    <td>192.168.1.115</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:15:22</td>
+                                    <td>Mary Johnson</td>
+                                    <td>Document Uploaded</td>
+                                    <td>Documents</td>
+                                    <td>Uploaded EIA report for PER-2024-019</td>
+                                    <td>192.168.1.100</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:12:08</td>
+                                    <td>System</td>
+                                    <td>Failed Login</td>
+                                    <td>Security</td>
+                                    <td>Failed login attempt - invalid credentials</td>
+                                    <td>203.123.45.67</td>
+                                </tr>
+                                <tr>
+                                    <td>2024-01-15 14:08:45</td>
+                                    <td>Grace Zulu</td>
+                                    <td>Report Generated</td>
+                                    <td>Reports</td>
+                                    <td>Generated monthly permit statistics report</td>
+                                    <td>192.168.1.120</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <div style="color: #666;">
+                                Showing 8 of 1,247 log entries
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Previous</button>
+                                <span style="padding: 8px 12px; background: #f8f9fa; border-radius: 4px;">Page 1 of 156</span>
+                                <button class="btn btn-secondary" style="font-size: 0.9em;">Next</button>
+                            </div>
+                        </div>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 25px;">
+                            <h4>Log Summary</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-top: 15px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5em; font-weight: bold; color: #1e3a8a;">247</div>
+                                    <div style="color: #666; font-size: 0.9em;">Today's Activities</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5em; font-weight: bold; color: #059669;">1,890</div>
+                                    <div style="color: #666; font-size: 0.9em;">This Week</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5em; font-weight: bold; color: #ea580c;">23</div>
+                                    <div style="color: #666; font-size: 0.9em;">Security Events</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.5em; font-weight: bold; color: #dc2626;">3</div>
+                                    <div style="color: #666; font-size: 0.9em;">Critical Alerts</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- System Features Summary (Always Visible) -->
+    <div class="section">
+        <div class="wireframe-content" style="text-align: center; background: #1e3a8a; color: white;">
+            <h3>System Features Summary</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;">
+                <div>
+                    <h4>🔐 Secure Access</h4>
+                    <p>Role-based permissions for different user types</p>
+                </div>
+                <div>
+                    <h4>📱 Mobile Responsive</h4>
+                    <p>Access system from any device</p>
+                </div>
+                <div>
+                    <h4>📊 Real-time Reports</h4>
+                    <p>Comprehensive analytics and monitoring</p>
+                </div>
+                <div>
+                    <h4>💳 Multiple Payment Options</h4>
+                    <p>Flexible payment processing</p>
+                </div>
+                <div>
+                    <h4>📋 Automated Workflows</h4>
+                    <p>Streamlined permit processing</p>
+                </div>
+                <div>
+                    <h4>🔄 Integration Ready</h4>
+                    <p>API connections for external systems</p>
+                </div>
+            </div>
+            <p style="margin-top: 20px; opacity: 0.8;">This wireframe demonstrates the core functionality of the Subcatchment Council Billing & Permit System</p>
+        </div>
+    </div>
+</body>
+</html>
